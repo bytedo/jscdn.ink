@@ -34,7 +34,8 @@
 
       <dt>四、维护者</dt>
       <dd>
-        <a href="//github.com/yutent" target="_blank">yutent</a>
+        <p><a href="//github.com/yutent" target="_blank">yutent</a></p>
+        <p><a target="_blank" href="//github.com/bytedo/jscdn.ink/issues">建议和反馈</a></p>
         <p>项目托管于阿里云oss。</p>
       </dd>
     </dl>
