@@ -110,4 +110,15 @@ export default {
     content: '免费、快速、开放的 CDN 服务';
   }
 }
+@media screen and (max-width: 1024px) {
+  .common-header {
+    .navibar {
+      width: 100%;
+      padding: 0 32px;
+    }
+    .wrapper {
+      width: 100%;
+    }
+  }
+}
 </style>

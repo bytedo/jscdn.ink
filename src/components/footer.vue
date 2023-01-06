@@ -1,7 +1,7 @@
 <template>
   <footer class="copyright">
-    <a target="_blank" href="https://beian.miit.gov.cn/">桂ICP备2022011680号-1</a>
-    <span>&copy;Copyright 2022 jscdn.ink </span>
+    <span>&copy;Copyright 2022 jscdn.ink Power by</span>
+    <a class="link" target="_blank" href="//github.com/bytedo/vue-live">vue-live</a>
   </footer>
 </template>
 
@@ -13,7 +13,6 @@ export default {}
 .copyright {
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -21,8 +20,10 @@ export default {}
   background: var(--color-plain-1);
   color: var(--color-grey-2);
 
-  a {
-    margin-bottom: 16px;
+  .link {
+    margin-left: 6px;
+    color: var(--color-blue-1);
+    text-decoration: underline;
   }
 }
 </style>
