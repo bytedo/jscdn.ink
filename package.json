@@ -5,7 +5,7 @@
     "start": "vue-live dev",
     "build": "vue-live build"
   },
-  "dependencies": {
+  "devDependencies": {
     "@bytedo/vue-live": "^0.0.13"
   }
 }
