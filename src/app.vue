@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <router-view class="main-body" />
+  <div class="main-body"><router-view /></div>
   <Footer />
 </template>
 
@@ -9,11 +9,29 @@ import Header from './components/header.vue'
 import Footer from './components/footer.vue'
 
 export default {
-  components: { Header, Footer }
+  components: { Header, Footer },
+
+  mounted() {
+    var user = localStorage.getItem('user')
+    if (user) {
+      this.$store.user = JSON.parse(user)
+    }
+  }
 }
 </script>
 
 <style lang="scss">
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--color-plain-3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-a);
+
+  &:hover {
+    background: var(--color-dark-1);
+  }
+}
 body {
   line-height: 1.5;
   font-size: 14px;
