@@ -6,6 +6,6 @@
     "build": "vue-live build"
   },
   "devDependencies": {
-    "@bytedo/vue-live": "^0.0.13"
+    "@bytedo/vue-live": "^0.1.4"
   }
 }
