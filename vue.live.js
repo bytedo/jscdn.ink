@@ -25,11 +25,13 @@ export default {
   // 有用到其他的库, 可以手动添加,
   // 也可以在页面中直接引入完整的路径, 而不必须在这里声明
   imports: {
-    vue: '//jscdn.ink/vue/dist/vue.esm-browser.prod.js',
-    'vue-router': '//jscdn.ink/vue-router/dist/vue-router.esm-browser.js',
+    vue: '//a.jscdn.ink/vue/dist/vue.esm-browser.prod.js',
+    'vue-router': '//a.jscdn.ink/vue-router/dist/vue-router.esm-browser.js',
     // 这个库被vue-router依赖, 可以注释掉vue-router代码中的 @vue/devtools-api 的引入
     // 以达到减少不必须的体积的效果
-    '@vue/devtools-api': '//jscdn.ink/@vue/devtools-api@6.4.4/lib/esm/index.js',
-    fetch: '//jscdn.ink/@bytedo/fetch/dist/next.js'
+    '@vue/devtools-api':
+      '//a.jscdn.ink/@vue/devtools-api@6.4.4/lib/esm/index.js',
+    fetch: '//a.jscdn.ink/@bytedo/fetch/dist/next.js',
+    'node-fetch': '//a.jscdn.ink/@bytedo/fetch/dist/next.js'
   }
 }

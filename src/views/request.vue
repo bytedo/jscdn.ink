@@ -18,17 +18,29 @@
         <wc-td align="center">{{ it.id }}</wc-td>
         <wc-td align="center">{{ it.author }}</wc-td>
         <wc-td>{{ it.description }}</wc-td>
-        <wc-td>{{ it.sync_date }}</wc-td>
+        <wc-td align="center">{{ it.sync_date }}</wc-td>
         <wc-td align="center">{{ $store.stats[it.stat] }}</wc-td>
         <wc-td>{{ it.remark }}</wc-td>
-        <wc-td v-if="$store.user.admin" align="center">
+        <wc-td align="center">
           <wc-link @click="handlePackgae('sync', it.id)" type="info"
+            >更新</wc-link
+          >
+          <wc-link
+            v-if="$store.user.admin"
+            @click="handlePackgae('accept', it.id)"
+            type="info"
             >通过</wc-link
           >
-          <wc-link @click="handlePackgae('reject', it.id)" type="warning"
+          <wc-link
+            v-if="$store.user.admin"
+            @click="handlePackgae('reject', it.id)"
+            type="warning"
             >拒绝</wc-link
           >
-          <wc-link @click="handlePackgae('delete', it.id)" type="danger"
+          <wc-link
+            v-if="$store.user.admin"
+            @click="handlePackgae('delete', it.id)"
+            type="danger"
             >删除</wc-link
           >
         </wc-td>
@@ -79,9 +91,9 @@
 </template>
 
 <script>
-import '//unpkg.com/@bytedo/wcui/dist/table/index.js'
-import '//unpkg.com/@bytedo/wcui/dist/form/switch.js'
-import '//unpkg.com/@bytedo/wcui/dist/pager/index.js'
+import '//a.jscdn.ink/@bytedo/wcui/dist/table/index.js'
+import '//a.jscdn.ink/@bytedo/wcui/dist/form/switch.js'
+import '//a.jscdn.ink/@bytedo/wcui/dist/pager/index.js'
 import fetch from '@/lib/fetch.js'
 
 export default {
@@ -95,7 +107,8 @@ export default {
         '介绍',
         '最后同步日期',
         '收录状态',
-        '备注'
+        '备注',
+        '操作'
       ]),
       page: 1,
       total: 0,
@@ -114,25 +127,15 @@ export default {
   mounted() {
     this.$store.searchShow = false
 
-    if (this.$store.user.admin) {
-      this.thead = JSON.stringify([
-        '开源库',
-        '作者',
-        '介绍',
-        '最后同步日期',
-        '收录状态',
-        '备注',
-        '操作'
-      ])
-    }
-
     this.fetchList()
   },
   methods: {
     fetchList() {
       fetch('/package/list').then(r => {
-        this.$list = r.data
-        this.list = r.data.filter(it =>
+        this.$list = r.data.map(
+          it => ((it.sync_date = new Date(it.sync_date).format('Y/m/d')), it)
+        )
+        this.list = this.$list.filter(it =>
           this.onlyShowWaited ? it.stat === 1 : true
         )
         this.total = this.list.length
@@ -158,7 +161,14 @@ export default {
     },
 
     openDialog() {
-      this.$refs.form.show()
+      if (this.$store.user.id) {
+        this.$refs.form.show()
+      } else {
+        layer.confirm('你还没有登录, 请先登录之后, 再申请').then(_ => {
+          localStorage.setItem('login_callback_path', this.$route.path)
+          this.$router.push('/login')
+        })
+      }
     },
 
     resetForm(force) {
@@ -245,12 +255,16 @@ export default {
     },
 
     handlePackgae(act, id) {
+      if (act !== 'sync' && !this.$store.user.admin) {
+        return layer.alert('别闹, 老实等管理员通过~~')
+      }
       fetch(`/package/${act}/${encodeURIComponent(id)}`)
         .then(r => {
           layer.toast('操作成功', 'success')
           this.fetchList()
         })
         .catch(r => {
+          console.log(r)
           layer.toast(r.msg, 'error')
         })
     }

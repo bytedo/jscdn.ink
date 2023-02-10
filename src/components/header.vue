@@ -2,7 +2,7 @@
   <div class="common-header" :class="{ 'search-show': $store.searchShow }">
     <header class="navibar">
       <div class="wrapper">
-        <a class="logo">Js CDN</a>
+        <a class="logo"><img src="/assets/logo.svg" /></a>
 
         <nav class="navi">
           <router-link to="/">首 页</router-link>
@@ -56,6 +56,11 @@ export default {
     .logo {
       font-weight: bold;
       font-size: 26px;
+
+      img {
+        display: block;
+        height: 36px;
+      }
     }
 
     .navi {
