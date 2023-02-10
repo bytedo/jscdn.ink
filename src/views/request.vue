@@ -22,7 +22,10 @@
         <wc-td align="center">{{ $store.stats[it.stat] }}</wc-td>
         <wc-td>{{ it.remark }}</wc-td>
         <wc-td align="center">
-          <wc-link @click="handlePackgae('sync', it.id)" type="info"
+          <wc-link
+            :disabled="it.stat !== 2"
+            @click="handlePackgae('sync', it)"
+            type="info"
             >更新</wc-link
           >
           <wc-link
@@ -258,14 +261,34 @@ export default {
       if (act !== 'sync' && !this.$store.user.admin) {
         return layer.alert('别闹, 老实等管理员通过~~')
       }
-      fetch(`/package/${act}/${encodeURIComponent(id)}`)
+      let req
+      if (act === 'reject' || act === 'delete') {
+        req = layer.prompt('请输入理由').then(remark => {
+          return fetch(`/package/${act}/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            body: { remark }
+          })
+        })
+      } else if (act === 'accept') {
+        req = layer.prompt('请输入文件目录').then(dist => {
+          return fetch(`/package/${act}/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            body: { dist }
+          })
+        })
+      } else {
+        req = fetch(`/package/${act}/${encodeURIComponent(id)}`, {
+          method: 'PUT'
+        })
+      }
+
+      req
         .then(r => {
           layer.toast('操作成功', 'success')
           this.fetchList()
         })
         .catch(r => {
-          console.log(r)
-          layer.toast(r.msg, 'error')
+          r && layer.toast(r.msg, 'error')
         })
     }
   }

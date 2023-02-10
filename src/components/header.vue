@@ -1,5 +1,8 @@
 <template>
-  <div class="common-header" :class="{ 'search-show': $store.searchShow }">
+  <div
+    class="common-header noselect"
+    :class="{ 'search-show': $store.searchShow }"
+  >
     <header class="navibar">
       <div class="wrapper">
         <a class="logo"><img src="/assets/logo.svg" /></a>
