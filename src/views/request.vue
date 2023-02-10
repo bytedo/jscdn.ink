@@ -24,7 +24,7 @@
         <wc-td align="center">
           <wc-link
             :disabled="it.stat !== 2"
-            @click="handlePackgae('sync', it)"
+            @click="handlePackgae('sync', it.id)"
             type="info"
             >更新</wc-link
           >
