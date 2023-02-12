@@ -1,10 +1,10 @@
 import { createApp } from 'vue'
 
-import '//a.jscdn.ink/es.shim/dist/index.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/form/input.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/form/button.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/form/link.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/layer/index.js'
+import '//jscdn.ink/es.shim/2.1.0/index.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/form/input.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/form/button.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/form/link.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/layer/index.js'
 
 import App from './app.vue'
 

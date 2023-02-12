@@ -17,19 +17,19 @@
       <wc-tr v-for="it of list" :key="it.id">
         <wc-td align="center">{{ it.id }}</wc-td>
         <wc-td align="center">{{ it.author }}</wc-td>
-        <wc-td>{{ it.description }}</wc-td>
-        <wc-td align="center">{{ it.sync_date }}</wc-td>
+        <wc-td align="center">{{ it.latest || '-' }}</wc-td>
+        <wc-td align="center">{{ it.latest ? it.sync_date : '-' }}</wc-td>
         <wc-td align="center">{{ $store.stats[it.stat] }}</wc-td>
-        <wc-td>{{ it.remark }}</wc-td>
+        <wc-td>{{ it.remark || '-' }}</wc-td>
         <wc-td align="center">
           <wc-link
-            :disabled="it.stat !== 2"
+            :disabled="loading || it.stat !== 2"
             @click="handlePackgae('sync', it.id)"
             type="info"
             >更新</wc-link
           >
           <wc-link
-            v-if="$store.user.admin"
+            v-if="$store.user.admin && it.stat !== 2"
             @click="handlePackgae('accept', it.id)"
             type="info"
             >通过</wc-link
@@ -94,9 +94,9 @@
 </template>
 
 <script>
-import '//a.jscdn.ink/@bytedo/wcui/dist/table/index.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/form/switch.js'
-import '//a.jscdn.ink/@bytedo/wcui/dist/pager/index.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/table/index.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/form/switch.js'
+import '//jscdn.ink/@bytedo/wcui/1.0.12/pager/index.js'
 import fetch from '@/lib/fetch.js'
 
 export default {
@@ -107,7 +107,7 @@ export default {
       thead: JSON.stringify([
         '开源库',
         '作者',
-        '介绍',
+        '最后同步版本',
         '最后同步日期',
         '收录状态',
         '备注',
@@ -206,13 +206,13 @@ export default {
             : 'unknow'
 
           this.lib.author = author
-          this.lib.description = r.description
+          this.lib.description = r.description || r.homepage
           this.lib.latest = r['dist-tags'].latest
 
           this.disabled = false
           return {
             author,
-            description: r.description,
+            description: this.lib.description,
             latest: r['dist-tags'].latest
           }
         })
@@ -270,7 +270,7 @@ export default {
           })
         })
       } else if (act === 'accept') {
-        req = layer.prompt('请输入文件目录').then(dist => {
+        req = layer.prompt('请输入文件目录', 'dist').then(dist => {
           return fetch(`/package/${act}/${encodeURIComponent(id)}`, {
             method: 'PUT',
             body: { dist }
@@ -281,7 +281,7 @@ export default {
           method: 'PUT'
         })
       }
-
+      this.loading = true
       req
         .then(r => {
           layer.toast('操作成功', 'success')
@@ -290,6 +290,7 @@ export default {
         .catch(r => {
           r && layer.toast(r.msg, 'error')
         })
+        .finally(_ => (this.loading = false))
     }
   }
 }
