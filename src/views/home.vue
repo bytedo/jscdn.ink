@@ -1,6 +1,19 @@
 <template>
-  <main class="home">
-    <dl class="card" v-for="it in libs" :key="it.name">
+  <main class="home" @click="copy">
+    <dl class="card" v-if="$store.result">
+      <dt class="title">
+        {{ $store.result.id }} - v{{ $store.result.versions[0] }}
+      </dt>
+      <dd class="list">
+        <section
+          class="link"
+          v-for="f in $store.result[$store.result.versions[0]]"
+        >
+          //jscdn.ink/{{ $store.result.id }}/{{ f }}
+        </section>
+      </dd>
+    </dl>
+    <dl class="card" v-else v-for="it in libs" :key="it.name">
       <dt class="title">{{ it.name }} - v{{ it.version }}</dt>
       <dd class="list">
         <section class="link" v-for="f in it.files">
@@ -35,22 +48,6 @@ export default {
           ]
         },
         {
-          name: 'vue-router',
-          version: '4.1.6',
-          files: [
-            'vue-router.cjs',
-            'vue-router.cjs.js',
-            'vue-router.cjs.prod.js',
-            'vue-router.esm-browser.js',
-            'vue-router.esm-bundler.js',
-            'vue-router.global.js',
-            'vue-router.global.prod.js',
-            'vue-router.mjs',
-            'vue-router.node.mjs',
-            'vue-router.prod.cjs'
-          ]
-        },
-        {
           name: '@bytedo/fetch',
           version: '2.1.1',
           files: ['index.js', 'next.js']
@@ -61,6 +58,15 @@ export default {
 
   mounted() {
     this.$store.searchShow = true
+  },
+
+  methods: {
+    copy(ev) {
+      if (ev.target.tagName === 'SECTION') {
+        navigator.clipboard.writeText(ev.target.textContent.trim())
+        layer.toast('复制成功', 'success')
+      }
+    }
   }
 }
 </script>
@@ -70,7 +76,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 16px;
+  padding: 16px 0 32px;
 
   .card {
     width: 1024px;

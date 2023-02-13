@@ -23,13 +23,50 @@
       <p>同时我们也提供自主提交开源库的收录(前提是在npm上发布的)</p>
     </cite>
 
-    <wc-input class="search" no-border placeholder="请输入开源库的名字~~" />
+    <wc-input
+      class="search"
+      no-border
+      placeholder="请输入开源库的名字~~"
+      clearable
+      v-model="input"
+      @submit="search"
+    />
   </div>
 </template>
 
 <script>
+import fetch from '@/lib/fetch'
+
 export default {
-  props: {}
+  data() {
+    return { input: '' }
+  },
+  methods: {
+    search() {
+      let id = this.input.trim()
+      if (id) {
+        fetch('/package/search/' + encodeURIComponent(id)).then(r => {
+          // let list = r.data.map(it => it.split('/'))
+          let dict = { versions: [], id }
+          let last = null
+          for (let it of r.data) {
+            let tmp = it.split('/')
+            if (tmp.length === 1) {
+              last = it
+              dict.versions.push(last)
+              dict[last] = []
+            } else {
+              dict[last].push(it)
+            }
+          }
+          console.log(dict)
+          this.$store.result = dict
+        })
+      } else {
+        this.$store.result = null
+      }
+    }
+  }
 }
 </script>
 
