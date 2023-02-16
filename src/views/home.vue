@@ -1,14 +1,19 @@
 <template>
   <main class="home" @click="copy">
-    <dl class="card" v-if="$store.result">
+    <dl class="card" v-if="version">
       <dt class="title">
-        {{ $store.result.id }} - v{{ $store.result.versions[0] }}
+        {{ $store.result.id }} -
+        <wc-dropdown v-model="version">
+          <wc-option
+            v-for="v in $store.result.versions"
+            :key="v"
+            :value="v"
+            :label="v"
+          />
+        </wc-dropdown>
       </dt>
       <dd class="list">
-        <section
-          class="link"
-          v-for="f in $store.result[$store.result.versions[0]]"
-        >
+        <section class="link" v-for="f in $store.result[version]">
           //jscdn.ink/{{ $store.result.id }}/{{ f }}
         </section>
       </dd>
@@ -52,7 +57,18 @@ export default {
           version: '2.1.1',
           files: ['index.js', 'next.js']
         }
-      ]
+      ],
+      version: ''
+    }
+  },
+
+  watch: {
+    '$store.result'(val) {
+      if (val) {
+        this.version = val.versions[val.versions.length - 1]
+      } else {
+        this.version = ''
+      }
     }
   },
 
