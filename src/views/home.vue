@@ -61,6 +61,7 @@ export default {
 
   mounted() {
     this.$store.searchShow = true
+    console.log(this.$route.query)
   }
 }
 </script>

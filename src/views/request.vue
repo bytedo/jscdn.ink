@@ -15,7 +15,9 @@
     </div>
     <wc-table class="list" :thead="thead">
       <wc-tr v-for="it of list" :key="it.id">
-        <wc-td align="center">{{ it.id }}</wc-td>
+        <wc-td align="center">
+          <router-link :to="'/?name=' + it.id">{{ it.id }}</router-link>
+        </wc-td>
         <wc-td align="center">{{ it.author }}</wc-td>
         <wc-td align="center">{{ it.latest || '-' }}</wc-td>
         <wc-td align="center">{{ it.latest ? it.sync_date : '-' }}</wc-td>
@@ -54,6 +56,7 @@
       class="pager"
       layout="prev,pages,next"
       red
+      @page-change="pageChanged"
       :total="total"
       :page="page"
     />
@@ -138,11 +141,22 @@ export default {
         this.$list = r.data.map(
           it => ((it.sync_date = new Date(it.sync_date).format('Y/m/d')), it)
         )
-        this.list = this.$list.filter(it =>
-          this.onlyShowWaited ? it.stat === 1 : true
-        )
-        this.total = this.list.length
+        this.fetchPage()
+        this.total = this.$list.length
       })
+    },
+
+    fetchPage() {
+      let start = (this.page - 1) * 20
+      let end = start + 20
+      this.list = this.$list
+        .filter(it => (this.onlyShowWaited ? it.stat === 1 : true))
+        .slice(start, end)
+    },
+
+    pageChanged(ev) {
+      this.page = ev.detail
+      this.fetchPage()
     },
 
     search() {

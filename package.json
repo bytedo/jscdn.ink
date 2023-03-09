@@ -2,10 +2,10 @@
   "name": "jscdn.ink",
   "type": "module",
   "scripts": {
-    "start": "vue-live dev",
-    "build": "vue-live build"
+    "start": "fite dev",
+    "build": "fite build"
   },
   "devDependencies": {
-    "@bytedo/vue-live": "^0.1.4"
+    "fite": "^0.3.3"
   }
 }
