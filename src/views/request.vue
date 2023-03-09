@@ -25,7 +25,8 @@
         <wc-td>{{ it.remark || '-' }}</wc-td>
         <wc-td align="center">
           <wc-link
-            :disabled="loading || it.stat !== 2"
+            v-if="it.stat === 2"
+            :disabled="loading"
             @click="handlePackgae('sync', it.id)"
             type="info"
             >更新</wc-link
@@ -37,13 +38,13 @@
             >通过</wc-link
           >
           <wc-link
-            v-if="$store.user.admin"
+            v-if="$store.user.admin && it.stat !== 0"
             @click="handlePackgae('reject', it.id)"
             type="warning"
             >拒绝</wc-link
           >
           <wc-link
-            v-if="$store.user.admin"
+            v-if="$store.user.admin && it.stat !== 0"
             @click="handlePackgae('delete', it.id)"
             type="danger"
             >删除</wc-link

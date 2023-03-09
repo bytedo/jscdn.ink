@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header :searchInput="$store.searchInput" />
   <div class="main-body"><router-view /></div>
   <Footer />
 </template>
@@ -13,6 +13,7 @@ export default {
 
   mounted() {
     var user = localStorage.getItem('user')
+
     if (user) {
       this.$store.user = JSON.parse(user)
     }

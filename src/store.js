@@ -7,7 +7,8 @@ const store = reactive({
     1: '🕒待审核中',
     2: '✅正常',
     9: '🙅🏻拒绝收录'
-  }
+  },
+  result: null // 搜索结果
 })
 
 export default function (app) {
